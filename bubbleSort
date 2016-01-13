@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+int bubbleSort(int * arr, int size){
+	bool swappedThisTurn = true;
+	int comparisonCount = 0;
+	int temp;
+	int elmsSorted = 0;
+
+	while(swappedThisTurn){
+		swappedThisTurn = false;
+		for(int i = 1; i<size-elmsSorted; i++){
+			if(arr[i] < arr[i-1]){
+				comparisonCount++;
+				temp = arr[i];
+				arr[i] = arr[i-1];
+				arr[i-1] = temp;
+				swappedThisTurn = true;
+			}
+		}
+	}
+
+	return comparisonCount;
+}
+
+void outputList(int * arr, int size){
+	for(int i = 0; i<size; i++){
+		cout << to_string(arr[i]) << " ";
+	}
+	cout << "\n";
+}
+
+int main(){
+
+	cout << "How many numbers do you want to sort?\n";
+	int n; cin >> n;
+	int arr[n];
+	cout << "Input the numbers\n";
+	for(int i = 0; i<n; i++){
+		cin >> arr[i];
+	}
+
+	cout << "This required " << to_string(bubbleSort(arr, n)) << " comparisons.\n";
+
+	cout << "Sorted list: ";
+	outputList(arr, n);
+
+	return 0;
+}
