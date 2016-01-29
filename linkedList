@@ -1,0 +1,252 @@
+//Compiled with g++ -Wall linkedList.cpp
+
+#include <iostream>
+#include <cstdio>
+
+//creates the base type for elements in a linkedList
+class node{
+private:
+	//node has an integer value and a pointer to the next node
+	int value;
+	node * next;
+public:
+	//each of these is explained when they are defined below
+	node(int val);
+	int getValue();
+	node * getNext();
+	void setNext(node * newNext);
+};
+
+//linkedList class: data object containing a sequence of integers connected to pointers
+//in which each pointer connects to the next integer/pointer object
+class linkedList{
+private:
+	//only referenceable value is a reference to the first elelement in the linkedList
+	node * head;
+public:
+	//each of these is explained when they are defined below
+	linkedList();
+	void addNode(node * newNode, node * locationInList);
+	void output();
+	void fill();
+	void weaveNewList(int step, int numElements);
+};
+
+//constructs a node with the given integer value
+//sets next pointer to NULL (can be modified later)
+node::node(int val):
+	value(val),
+	next(NULL){};
+
+//returns the node's value
+int node::getValue(){
+	return value;
+}
+
+//returns a pointer to the node that the current node points to
+node * node::getNext(){
+	return next;
+}
+
+//changes where the node points to
+void node::setNext(node * newNext){
+	next = newNext;
+}
+
+//creates an empty linkedList
+linkedList::linkedList():
+	head(NULL){};
+
+//adds a node into the linked list given the node and the node that it is to be inserted afer
+void linkedList::addNode(node * newNode, node * locationInList){
+
+	//If NULL is the insert location, put the new node at the beginning of the list
+	if(!locationInList){
+		newNode -> setNext(head);
+		head = newNode;
+	}
+
+	//If there's no node after the location node, attach it to the new node
+	else if(! (locationInList -> getNext())){
+		locationInList -> setNext(newNode);
+	}
+
+	//Otherwise
+	else{
+		//hold the end of the linkedList temporarily
+		node * temp = locationInList -> getNext();
+		//insert the new node at the location specified
+		locationInList -> setNext(newNode);
+		//reattach the end of the linkedList
+		newNode -> setNext(temp);
+	}
+
+}
+
+//outputs a linkedList
+void linkedList::output(){
+	node * current = head;
+	while (current != NULL){
+		printf("%d ", (current -> getValue()));
+		current = current -> getNext();
+	}
+	printf("\b\n");
+}
+
+//fills a linkedList with integer inputs
+void linkedList::fill(){
+
+	//if the list is not empty, don't fill it
+	if(head){
+		printf("List is non-empty; cannot fill.\n");
+		return;
+	}
+
+	//take in the size of the array
+	int numInList; scanf("%d", &numInList);
+
+	//catch if there's an invalid number to be inserted
+	if(numInList < 1){
+		printf("Not a valid number of list elements.\n");
+		return;
+	}
+
+	//take in first node, set it as the head
+	int x;
+	scanf("%d", &x);
+	head = new node(x);
+
+	//hold a pointer to the current node
+	node * current = head;
+
+	//take in values, create nodes, and add them to the list
+	for(int j = 1; j<numInList; j++){
+
+		scanf("%d", &x);
+
+		addNode(new node(x), current);
+
+		current = current -> getNext();
+		
+	}
+}
+
+//interleaves a new linkedList into the current one given an increment
+//NOTE: this does not create a second list, it just puts the new values straight into the first linkedList
+//to save time. For an algorithm that interweaves a newly created list, see my comments at the end of the code
+//(this is how I initially did the assignment)
+void linkedList::weaveNewList(int step, int numElements){
+
+	//node pointer to point to the current spot in the bigger list
+	node * currentMaj = head;
+
+	//node pointer to point to the current spot in the smaller list
+	//node * currentMin = minorll.getHead();
+
+	int i;
+	int x;
+
+	//while there are still elements of the minor list to be traversed
+	for(int j = 0; j<numElements; j++){
+
+		//move the correct number of spaces in the major list
+		//based on increment
+		for(i=0; i<(step-1); i++){
+			currentMaj = currentMaj -> getNext();
+		}
+
+		//creating a temporary pointer to the rest of the major list
+		node * tempMaj = currentMaj -> getNext();
+
+		//connecting the current element in the minor list to the last major list element
+		scanf("%d",&x);
+		currentMaj -> setNext(new node(x));
+
+		//moving the currentMaj pointer to the new element inserted
+		currentMaj = currentMaj -> getNext();
+
+		//reconnecting the end of the majorList to the new element
+		currentMaj -> setNext(tempMaj);
+
+		//moving forward to the next majorList element
+		currentMaj = currentMaj -> getNext();
+	}
+
+}
+
+
+int main(){
+
+	//initialize a majorList to be interspersed into, and fill it with values
+	linkedList majorList;
+	majorList.fill();
+
+
+	//take in the number of lists to be interspersed
+	int numLists; scanf("%d", &numLists);
+	
+	//for the number of lists:
+	int step;
+	int numElms;
+
+	for(int i = 0; i<numLists; i++){
+
+		//take in the step increment for interspersion
+		scanf("%d", &step);
+		scanf("%d", &numElms);
+
+		//weave the list into the major list
+		majorList.weaveNewList(step, numElms);
+
+	}
+
+	//output the major list
+	majorList.output();
+
+	return 0;
+}
+// //interleaves two linkedlists given an increment
+// //upon exiting, minorll is empty and majorll contains the interleaved lists
+// void intersperse(linkedList & majorll, linkedList & minorll, int increment){
+
+// 	//node pointer to point to the current spot in the bigger list
+// 	node * currentMaj = majorll.getHead();
+
+// 	//node pointer to point to the current spot in the smaller list
+// 	//node * currentMin = minorll.getHead();
+
+// 	int i;
+
+// 	//while there are still elements of the minor list to be traversed
+// 	while(minorll.getHead() != NULL){
+
+// 		//move the correct number of spaces in the major list
+// 		//based on increment
+// 		for(i=0; i<(increment-1); i++){
+// 			currentMaj = currentMaj -> getNext();
+// 		}
+
+// 		//insert the node from the minor list by:
+
+// 		//creating a temporary pointer to the rest of the major list
+// 		node * tempMaj = currentMaj -> getNext();
+
+// 		//connecting the current element in the minor list to the last major list element
+// 		currentMaj -> setNext(minorll.getHead());
+
+// 		//moving the currentMaj pointer to the new element inserted
+// 		currentMaj = currentMaj -> getNext();
+
+// 		//setting the head of the minor list to the next element
+// 		//("removes" the first element that was just put into the major list)
+// 		minorll.setHead(minorll.getHead()->getNext());
+
+// 		//reconnecting the end of the majorList to the new element
+// 		currentMaj -> setNext(tempMaj);
+
+// 		//moving forward to the next majorList element
+// 		currentMaj = currentMaj -> getNext();
+
+// 	}
+
+// }
