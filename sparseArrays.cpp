@@ -39,25 +39,23 @@ void linkedList::fill(){
 
 	//if the list is not empty, don't fill it
 	if(head){
-		printf("List is non-empty; cannot fill.\n");
+		cout << "List is non-empty; cannot fill.\n";
 		return;
 	}
 
 	//take in the size of the array
-	int numInList; scanf("%d", &numInList);
+	int numInList; cin >> numInList;
 
 	//catch if there's an invalid number to be inserted
 	if(numInList < 1){
 		if(numInList < 0)
-			printf("Not a valid number of list elements.\n");
+			cout << "Not a valid number of list elements.\n";
 		return;
 	}
 
 	//take in first node, set it as the head
-	int c;
-	scanf("%d", &c);
-	int x;
-	scanf("%d", &x);
+	int c; cin >> c;
+	int x; cin >> x;
 	head = new node(c, x);
 
 	//hold a pointer to the current node
@@ -66,8 +64,8 @@ void linkedList::fill(){
 	//take in values, create nodes, and add them to the list
 	for(int j = 1; j<numInList; j++){
 
-		scanf("%d", &c);
-		scanf("%d", &x);
+		cin >> c;
+		cin >> x;
 
 		current -> next = new node(c,x);
 		current = current -> next;
@@ -83,10 +81,10 @@ linkedList::linkedList():
 void linkedList::output(){
 	node * current = head;
 	while (current != NULL){
-		printf("%d %d ", current->val1, current -> val2);
+		cout << to_string(current->val1) << " " << to_string(current -> val2) << " ";
 		current = current -> next;
 	}
-	printf("\b\n");
+	cout << "\n";
 }
 
 //adds this linkedList to another one
@@ -204,7 +202,7 @@ static linkedList search(vector<linkedList> arr){
 	node * listEnd = searchList.head;
 
 	pair<node*,node*> results;
-	int val; scanf("%d",&val);
+	int val; cin >> val;
 
 	//for every row of the array
 	for(int i = 0; i< arr.size(); i++){
@@ -237,7 +235,7 @@ int main(){
 	//take in both arrays
 	//create a vector of linkedLists
 	vector<linkedList> arr1;
-	int nRows; scanf("%d", &nRows);
+	int nRows; cin >> nRows;
 	//for the given number of rows,
 	for(int i = 0; i<nRows; i++){
 		//create a new linkedList
@@ -250,7 +248,7 @@ int main(){
 
 	//see same comments for above array
 	vector<linkedList> arr2;
-	scanf("%d", &nRows);
+	cin >> nRows;
 	for(int i = 0; i<nRows; i++){
 		linkedList newRow;
 		newRow.fill();
@@ -266,7 +264,7 @@ int main(){
 
 
 	int numSearches;
-	scanf("%d", &numSearches);
+	cin >> numSearches;
 
 	//create an array to hold the search results
 	//and add it in by successive searches for inputted values
@@ -277,6 +275,8 @@ int main(){
 
 	//output the results
 	output(searches);
+
+	ios::sync_with_stdio(false);
 
 	return 0;
 }
