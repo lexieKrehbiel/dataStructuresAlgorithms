@@ -280,3 +280,28 @@ int main(){
 
 	return 0;
 }
+
+// Lexies-MacBook-Pro:Documents alexandrakrehbiel$ g++ sparseArrays.cpp -o opWithoutAddAndSearch
+// Lexies-MacBook-Pro:Documents alexandrakrehbiel$ g++ sparseArrays.cpp -o fullOp
+// Lexies-MacBook-Pro:Documents alexandrakrehbiel$ time ./opWithoutAddAndSearch < in4
+
+// real	0m5.528s
+// user	0m5.256s
+// sys	0m0.138s
+// Lexies-MacBook-Pro:Documents alexandrakrehbiel$ time ./fullOp > myout  < in4
+
+// real	0m5.129s
+// user	0m4.971s
+// sys	0m0.056s
+// Lexies-MacBook-Pro:Documents alexandrakrehbiel$ diff -bB myout out4
+// Lexies-MacBook-Pro:Documents alexandrakrehbiel$ time ./opWithoutAddAndSearch < in5
+
+// real	0m6.670s
+// user	0m6.486s
+// sys	0m0.071s
+// Lexies-MacBook-Pro:Documents alexandrakrehbiel$ time ./fullOp > myout  < in5
+
+// real	0m12.292s
+// user	0m11.358s
+// sys	0m0.127s
+// Lexies-MacBook-Pro:Documents alexandrakrehbiel$ diff -bB myout out5
